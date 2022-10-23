@@ -4,17 +4,10 @@ const form = document.getElementById("form");
 const input = document.getElementById("input");
 const ul = document.getElementById("ul");
 
-// const todos = JSON.parse(localStorage.getItem("todos"));
-// if (todos) {
-//   todos.forEach((todo) => {
-//     add(todo);
-//   });
-// }
-
-// form.addEventListener("submit", function(event) {
-//     event.preventDefault();
-//     add(); 
-// });
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    add(); 
+});
 
 init();
 
@@ -51,10 +44,29 @@ function init() {
 			}	
 		}
 	}
+
+    //  ファイルを閉じる
+    ts.Close();
+    //  オブジェクトを解放
+    fso = null;
 }
 
-function test() {
-	
+function saveData() {
+	var fso = new ActiveXObject("Scripting.FileSystemObject");
+	var ts = fso.OpenTextFile("todos.txt", 2);
+
+    const lists = document.querySelectorAll("li");
+    for ( var i = 0; i < lists.length; i++ ){
+        var text = lists[i].innerText;
+        ts.WriteLine(text);
+        var completed = lists[i].classList.contains("text-decoration-line-through") ? 'true' : 'false';
+        ts.WriteLine(completed);
+    }
+
+    //  ファイルを閉じる
+    ts.Close();
+    //  オブジェクトを解放
+    fso = null;
 }
 
 function add(todo, completed) {
@@ -77,16 +89,16 @@ function add(todo, completed) {
         li.addEventListener("contextmenu", function (event){
           event.preventDefault();
           li.remove();
-          //saveData();
+          saveData();
         });
 
         li.addEventListener("click", function () {
           li.classList.toggle("text-decoration-line-through");
-          //saveData();
+          saveData();
         });
         ul.appendChild(li);
         input.value="";
-        //saveData();
+        saveData();
     }
 }
 
