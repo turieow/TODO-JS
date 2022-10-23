@@ -6,7 +6,8 @@ const ul = document.getElementById("ul");
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
-    add(); 
+    let text = input.value;
+    add(text, false); 
 });
 
 init();
@@ -56,12 +57,15 @@ function saveData() {
 	var ts = fso.OpenTextFile("todos.txt", 2);
 
     const lists = document.querySelectorAll("li");
+    var alltext = "";
     for ( var i = 0; i < lists.length; i++ ){
         var text = lists[i].innerText;
-        ts.WriteLine(text);
-        var completed = lists[i].classList.contains("text-decoration-line-through") ? 'true' : 'false';
-        ts.WriteLine(completed);
+        //ts.WriteLine(text);
+        var completed = lists[i].classList.contains("text-decoration-line-through") ? 'false' : 'true';
+        //ts.WriteLine(completed);
+        alltext += (text + '\n' + completed+ '\n');
     }
+    ts.Write(alltext);
 
     //  ファイルを閉じる
     ts.Close();
@@ -69,17 +73,11 @@ function saveData() {
     fso = null;
 }
 
-function add(todo, completed) {
-    let todoText = input.value;
-
-    if (todo) {
-        todoText = todo;
-    }
-
-    if(todoText)
+function add(todo, completed) {    
+    if(todo)
     {
         const li =document.createElement("li");
-        li.innerText=todoText;
+        li.innerText=todo;
         li.classList.add("list-group-item");
 
         if(todo && completed) {
