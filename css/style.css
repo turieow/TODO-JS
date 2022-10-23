@@ -1,0 +1,10 @@
+@charset "utf-8";
+
+body {
+	font-family: Meiryo;
+}
+
+.test {
+	color: red;
+	font-family: Meiryo;
+}
